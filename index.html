@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>পাতপেড়ে | Order Homemade Lunch</title>
+<style>
+:root{--cream:#fff8e8;--maroon:#7b171b;--deep:#5b1115;--gold:#d99a27}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f7ead1;color:#3f2417}
+header{background:var(--deep);color:#fff;padding:12px 18px;position:sticky;top:0;z-index:5}
+.nav{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between}.brand{font-size:28px;font-weight:800}.tag{font-size:12px}
+.btn{border:0;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer}.gold{background:var(--gold);color:#3d230f}.maroon{background:var(--maroon);color:#fff}
+.hero{max-width:1100px;margin:18px auto;padding:0 14px}.hero img{width:100%;border-radius:18px;box-shadow:0 10px 30px #5b321c22}
+.wrap{max-width:1100px;margin:auto;padding:20px 14px 60px}.title{text-align:center;color:var(--maroon);font-size:30px}
+.offer{background:linear-gradient(135deg,#7b171b,#a52b25);color:#fff;border-radius:18px;padding:18px;text-align:center;margin:20px 0}.offer strong{font-size:25px;color:#ffd45d}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fffaf0;border:1px solid #e6c987;border-radius:16px;padding:18px;text-align:center}.card h3{color:var(--maroon)}.price{font-size:24px;font-weight:800}.qty{display:flex;justify-content:center;align-items:center;gap:10px}.qty button{width:34px;height:34px;border:0;border-radius:50%;background:#ead09a;font-size:20px}.qty span{min-width:24px;font-weight:bold}
+.cart{margin-top:28px;background:#fffdf6;border-radius:18px;padding:20px;border:2px solid #e1bd69}.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #d8c29a}.total{text-align:right;font-size:24px;font-weight:800;color:var(--maroon);margin:15px 0}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form input,.form textarea{width:100%;padding:13px;border:1px solid #d8c29a;border-radius:10px;font:inherit}.form textarea{grid-column:1/-1;min-height:80px}.full{grid-column:1/-1}
+.help{text-align:center;margin-top:28px}.qr{max-width:180px;display:block;margin:12px auto}footer{background:var(--deep);color:#fff;text-align:center;padding:24px}
+@media(max-width:760px){.grid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}.form textarea,.full{grid-column:auto}}
+@media(max-width:430px){.grid{grid-template-columns:1fr}.tag{display:none}}
+</style></head>
+<body>
+<header><div class="nav"><div><div class="brand">পাতপেড়ে</div><div class="tag">ঘরোয়া খাবার, আপনজনের মতো ❤️</div></div><a href="#order"><button class="btn gold">Order Now</button></a></div></header>
+<section class="hero"><img src="assets/patpere-banner.png" alt="পাতপেড়ে homemade food"></section>
+<main class="wrap">
+<div class="offer">🎉 <strong>First Order Special — Veg Thali @ ₹99</strong><br>Freshly prepared homemade lunch. Order directly on WhatsApp.</div>
+<h2 class="title">আমাদের থালি</h2><div class="grid" id="menu"></div>
+<section class="cart" id="order"><h2 style="color:var(--maroon)">🛒 Your Order</h2><div id="cartItems">Select items above to add them.</div><div class="total">Total: ₹<span id="total">0</span></div>
+<h3>Delivery Details</h3><div class="form">
+<input id="name" placeholder="Your Name *"><input id="phone" placeholder="Mobile Number *">
+<input id="address" class="full" placeholder="Delivery Address *"><input id="date" type="date"><input id="time" type="time">
+<textarea id="notes" placeholder="Special instructions (optional)"></textarea>
+<button class="btn maroon full" onclick="sendOrder()">📲 Confirm Order on WhatsApp</button></div></section>
+<section class="help"><h2 class="title">Menu & Order</h2><p>Scan the QR code or visit our website.</p>
+<img class="qr" src="assets/patpere-qr.png" alt="Patpere QR Code" onerror="this.style.display='none'">
+<p><b>WhatsApp / Call: 7980281550</b></p><a href="https://patpere123.github.io/Patpere" target="_blank"><button class="btn gold">Visit পাতপেড়ে Website</button></a></section>
+</main><footer>পাতপেড়ে ❤️<br>সুস্বাদু খাবার, সবার জন্য…</footer>
+<script>
+const items=[["Veg Thali",110],["Egg Thali",120],["Fish Thali",140],["Chicken Thali",150]],cart={};
+function menu(){document.getElementById("menu").innerHTML=items.map((x,i)=>'<div class="card"><h3>'+x[0]+'</h3><div class="price">₹'+x[1]+'</div><div class="qty"><button onclick="chg('+i+',-1)">−</button><span id="q'+i+'">0</span><button onclick="chg('+i+',1)">+</button></div></div>').join("")}
+function chg(i,d){cart[i]=Math.max(0,(cart[i]||0)+d);document.getElementById("q"+i).textContent=cart[i];render()}
+function render(){let s="",t=0;items.forEach((x,i)=>{if(cart[i]){let a=cart[i]*x[1];t+=a;s+='<div class="row"><span>'+x[0]+' × '+cart[i]+'</span><b>₹'+a+'</b></div>'}});document.getElementById("cartItems").innerHTML=s||"Select items above to add them.";document.getElementById("total").textContent=t}
+function sendOrder(){
+let sel=items.map((x,i)=>cart[i]?x[0]+" × "+cart[i]+" = ₹"+cart[i]*x[1]:null).filter(Boolean);
+if(!sel.length){alert("Please select at least one item.");return}
+let n=document.getElementById("name").value.trim(),p=document.getElementById("phone").value.trim(),a=document.getElementById("address").value.trim(),d=document.getElementById("date").value,t=document.getElementById("time").value,notes=document.getElementById("notes").value.trim();
+if(!n||!p||!a||!d||!t){alert("Please fill all required delivery details.");return}
+let msg="Hello Patpere!%0A%0AI would like to place an order:%0A"+encodeURIComponent(sel.join("\n"))+"%0A%0A*Total: ₹"+document.getElementById("total").textContent+"*%0A%0AName: "+encodeURIComponent(n)+"%0AMobile: "+encodeURIComponent(p)+"%0AAddress: "+encodeURIComponent(a)+"%0ADelivery: "+encodeURIComponent(d+" "+t)+(notes?"%0ANotes: "+encodeURIComponent(notes):"");
+window.open("https://wa.me/917980281550?text="+msg,"_blank")
+}menu();
+</script></body></html>
